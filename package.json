@@ -1,11 +1,15 @@
 {
   "license": "MIT",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "doc-gen": "node doc/swagger-autogen.js"
   },
+  "type": "module",
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "mongodb": "^6.7.0",
     "morgan": "^1.10.0",
     "mysql2": "^3.9.7",
     "pino": "^9.1.0",

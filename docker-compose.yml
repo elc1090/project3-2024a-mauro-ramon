@@ -1,0 +1,46 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - internal
+      - traefik-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-proxy"
+
+  estoque-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        AMBIENTE: local
+    container_name: estoque-api
+    restart: unless-stopped
+    networks:
+      - internal
+      - traefik-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-proxy"
+      - "traefik.http.routers.estoque-api.entrypoints=http" 
+      - "traefik.http.routers.estoque-api.rule=Host(`estoque.cloud.local`)"
+      - "traefik.http.middlewares.estoque-api-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.estoque-api.middlewares=estoque-api-https-redirect"
+      - "traefik.http.routers.estoque-api-secure.rule=Host(`estoque.cloud.local`)"
+      - "traefik.http.routers.estoque-api-secure.entrypoints=https"
+      - "traefik.http.routers.estoque-api-secure.tls=true"
+      - "traefik.http.services.estoque-api-secure.loadbalancer.server.port=3000"
+
+networks:
+  traefik-proxy:
+    external: true
+  internal:
+    external: true
+  
+volumes:
+  mongo-data:
