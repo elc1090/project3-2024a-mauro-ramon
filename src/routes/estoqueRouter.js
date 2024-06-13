@@ -1,14 +1,16 @@
 import { Router } from 'express';
 
-import { getStock, setStock } from '../db/mongoClient.js'
+import { dropDatabase, getStock, setStock } from '../db/mongoClient.js'
 
 const router = Router();
 
 router.get('/', async (req, res) => {
     try {
-        const {tipo, nome} = req.body;
-    
-        res.status(200).json(await getStock(tipo, nome));
+        const result = await getStock();
+
+        res.status(200).json({
+            "data" : result
+        });
     } catch (e) {
         res.status(500).json({
             "error": e.message,
@@ -19,13 +21,12 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const {tipo, nome, qtd} = req.body;
+        const {prod, qtd, marca} = req.body;
     
-        await setStock(tipo, nome, qtd);
+        const result = await setStock(prod, qtd, marca);
     
         res.status(200).json({
-            "inserted" : 1,
-            "ok": true
+            "result" : result
         })
     } catch (e) {
         res.status(500).json({
@@ -34,5 +35,20 @@ router.post('/', async (req, res) => {
         })
     }
 });
+
+router.delete('/', async (req, res) => {
+    try {    
+        const result = await dropDatabase();
+    
+        res.status(200).json({
+            "result" : result
+        })
+    } catch (e) {
+        res.status(500).json({
+            "error": e.message,
+            "ok": false 
+        })
+    }
+})
 
 export { router as estoqueRouter };

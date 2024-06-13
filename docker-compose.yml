@@ -9,10 +9,7 @@ services:
     networks:
       - internal
       - traefik-proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=traefik-proxy"
-
+      
   estoque-api:
     build:
       context: .

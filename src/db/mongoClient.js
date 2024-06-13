@@ -8,9 +8,7 @@ async function getClient() {
 
     try {
         mongoClient = new MongoClient(url);
-        logger.info('Connecting to MongoDB...');
         await mongoClient.connect();
-        logger.info('Successfully connected to MongoDB!');
 
         return mongoClient;
     } catch (error) {
@@ -19,20 +17,23 @@ async function getClient() {
     }
 }
 
-export async function setStock(tipo, nome, qtd) {
+export async function setStock(prod, qtd, marca) {
     let mongoClient;
  
     try {
         mongoClient = await getClient();
         const db = mongoClient.db('stock');
-        const collection = db.collection(tipo);
+        const collection = db.collection('stock');
 
         const item = {
-            name: nome,
-            qty: qtd
+            prod: prod,
+            qtd: qtd,
+            marca: marca
         };
      
-        await collection.insertOne(item);
+        const insertResult = await collection.insertOne(item);
+
+        return insertResult;
     } catch (e) {
         logger.error(e);
     } finally {
@@ -40,15 +41,30 @@ export async function setStock(tipo, nome, qtd) {
     }
 }
 
-export async function getStock(tipo, nome) {
+export async function getStock() {
     let mongoClient;
  
     try {
         mongoClient = await getClient();
         const db = mongoClient.db('stock');
-        const collection = db.collection(tipo);
+        const collection = db.collection('stock');
 
-        return collection.find({ nome }).toArray();
+        return await collection.find({}).toArray();
+    } catch (e) {
+        logger.error(e);
+    } finally {
+        await mongoClient.close();
+    }
+}
+
+export async function dropDatabase() {
+    let mongoClient;
+ 
+    try {
+        mongoClient = await getClient();
+        const db = mongoClient.db('stock');
+
+        return await db.dropDatabase();
     } catch (e) {
         logger.error(e);
     } finally {
