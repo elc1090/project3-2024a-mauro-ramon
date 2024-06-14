@@ -1,14 +1,14 @@
 services:
-  mongo:
-    image: mongo:latest
-    container_name: mongo
-    ports:
-      - '27017:27017'
-    volumes:
-      - mongo-data:/data/db
-    networks:
-      - internal
-      - traefik-proxy
+  # mongo:
+  #   image: mongo:latest
+  #   container_name: mongo
+  #   ports:
+  #     - '27017:27017'
+  #   volumes:
+  #     - mongo-data:/data/db
+  #   networks:
+  #     - internal
+  #     - traefik-proxy
       
   estoque-api:
     build:
@@ -39,5 +39,5 @@ networks:
   internal:
     external: true
   
-volumes:
-  mongo-data:
+# volumes:
+#   mongo-data:

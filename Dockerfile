@@ -27,14 +27,8 @@ COPY --chown=node:node doc ./doc
 #Copy scripts directory
 COPY --chown=node:node etc/script ./script
 
-#Copy public directory
-# COPY --chown=node:node public ./public
-
-ARG AMBIENTE
-ENV AMBIENTE $AMBIENTE
-
 #Copy .env file
-COPY --chown=node:node etc/config/${AMBIENTE}.env ./.env
+COPY --chown=node:node etc/config/.env ./.env
 
 RUN chmod -R 755 /app/script \
     && chown node:node /app

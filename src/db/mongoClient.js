@@ -12,7 +12,7 @@ async function getClient() {
 
         return mongoClient;
     } catch (error) {
-        logger.fatal('Connection to MongoDB failed: ' + error);
+        logger.fatal('Connection to MongoDB failed: ' + e.message);
         process.exit(1);
     }
 }
@@ -35,7 +35,7 @@ export async function setStock(prod, qtd, marca) {
 
         return insertResult;
     } catch (e) {
-        logger.error(e);
+        logger.error(e.message);
     } finally {
         await mongoClient.close();
     }
@@ -51,7 +51,7 @@ export async function getStock() {
 
         return await collection.find({}).toArray();
     } catch (e) {
-        logger.error(e);
+        logger.error(e.message);
     } finally {
         await mongoClient.close();
     }
@@ -66,7 +66,7 @@ export async function dropDatabase() {
 
         return await db.dropDatabase();
     } catch (e) {
-        logger.error(e);
+        logger.error(e.message);
     } finally {
         await mongoClient.close();
     }
