@@ -2,7 +2,7 @@
 
 ![Screenshot do projeto](./image.png)
 
-Acesso:
+Acesso:  
 Deploy front-end: https://project3-mauro-ramon.web.app  
 Deploy back-end: https://estoque-api-latest.onrender.com/api-doc
 
@@ -12,7 +12,7 @@ Repo back-end: https://github.com/elc1090/project3-2024a-mauro-ramon
 Api image registry: https://hub.docker.com/repository/docker/mrtrevisan/estoque-api/general
 
 ### Desenvolvedores
-Mauro Roberto Machado Trevisan
+Mauro Roberto Machado Trevisan  
 Ramon Godoy Izidoro
 
 ### Nosso projeto
