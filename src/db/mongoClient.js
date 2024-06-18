@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 import { logger } from '../index.js';
 
@@ -11,13 +11,13 @@ async function getClient() {
         await mongoClient.connect();
 
         return mongoClient;
-    } catch (error) {
+    } catch (e) {
         logger.fatal('Connection to MongoDB failed: ' + e.message);
         process.exit(1);
     }
 }
 
-export async function setStock(prod, qtd, marca) {
+export async function setStock(cat, atr) {
     let mongoClient;
  
     try {
@@ -26,9 +26,8 @@ export async function setStock(prod, qtd, marca) {
         const collection = db.collection('stock');
 
         const item = {
-            prod: prod,
-            qtd: qtd,
-            marca: marca
+            cat : cat,
+            atr : atr 
         };
      
         const insertResult = await collection.insertOne(item);
@@ -41,15 +40,18 @@ export async function setStock(prod, qtd, marca) {
     }
 }
 
-export async function getStock() {
+export async function getStock(cat) {
     let mongoClient;
  
     try {
         mongoClient = await getClient();
         const db = mongoClient.db('stock');
         const collection = db.collection('stock');
-
-        return await collection.find({}).toArray();
+        
+        // Filtro para a categoria, se fornecida
+        const query = cat ? { cat: cat } : {};
+                
+        return await collection.find(query).toArray();
     } catch (e) {
         logger.error(e.message);
     } finally {
@@ -65,6 +67,43 @@ export async function dropDatabase() {
         const db = mongoClient.db('stock');
 
         return await db.dropDatabase();
+    } catch (e) {
+        logger.error(e.message);
+    } finally {
+        await mongoClient.close();
+    }
+}
+
+export async function deleteById(id) {
+    let mongoClient;
+ 
+    try {
+        mongoClient = await getClient();
+        const db = mongoClient.db('stock');
+        const collection = db.collection('stock');
+
+        return await collection.deleteOne({ _id: ObjectId.createFromHexString(id) });
+    } catch (e) {
+        logger.error(e.message);
+    } finally {
+        await mongoClient.close();
+    }
+}
+
+export async function updateById(id, cat, atr) {
+    let mongoClient;
+ 
+    try {
+        mongoClient = await getClient();
+        const db = mongoClient.db('stock');
+        const collection = db.collection('stock');
+
+        const update = { $set: {} };
+
+        if (cat) update.$set.cat = cat;
+        if (atr) update.$set.atr = atr;
+
+        return await collection.updateOne({ _id: ObjectId.createFromHexString(id) }, update);
     } catch (e) {
         logger.error(e.message);
     } finally {
