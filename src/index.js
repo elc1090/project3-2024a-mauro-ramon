@@ -3,6 +3,7 @@ import express      from 'express';             //api framework
 import swaggerUi    from 'swagger-ui-express';  //swagger UI endpoint for express
 import morgan       from 'morgan';              //HTTP logger
 import pino         from 'pino';                //error and info logger
+import cors 		from 'cors';
 import fs           from 'fs';                  //JS built in file system
 
 import { estoqueRouter } from './routes/estoqueRouter.js';
@@ -36,6 +37,8 @@ try
 
 	//use HTTP logger middleware, common apache format
 	server.use(morgan('common'));
+
+	server.use(cors());
 
 	//server port
 	const port = process.env.PORT;
