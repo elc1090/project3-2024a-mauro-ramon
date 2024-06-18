@@ -1,12 +1,12 @@
 # Projeto:  Criar aplicação web com backend / persistência de dados em servidor
 
-![Screenshot do seu projeto]()
+![Screenshot do projeto](./image.png)
 
 Acesso:
-Deploy front-end: https://project3-mauro-ramon.web.app
+Deploy front-end: https://project3-mauro-ramon.web.app  
 Deploy back-end: https://estoque-api-latest.onrender.com/api-doc
 
-Repo front-end: https://github.com/RamonXXII/Projeto3-2024a-FrontEnd
+Repo front-end: https://github.com/RamonXXII/Projeto3-2024a-FrontEnd  
 Repo back-end: https://github.com/elc1090/project3-2024a-mauro-ramon
 
 Api image registry: https://hub.docker.com/repository/docker/mrtrevisan/estoque-api/general
@@ -28,6 +28,8 @@ Software de gerenciamento e controle de estoque, disponibiliza funções de:
 O frontend foi desenvolvido usando React, o deploy foi feito na cloud Firebase;  
 O backend foi deito em node com express, o deploy foi feito na cloud Render;  
 O banco de dados escolhido foi Mongo-DB (não relacional), deploy foi feito com Atlas.
+
+![Arquitetura do projeto](./arch.png)
 
 #### Tecnologias
 
@@ -51,12 +53,15 @@ Banco de dados:
 #### Ambiente de desenvolvimento
 
 - VS Code
+- Live Share
 
 #### Referências e créditos
 
 - Referência Javascript: https://developer.mozilla.org/
+- Referencia React-BootStrap: https://react-bootstrap.netlify.app/docs/getting-started/introduction
 - StackOverflow: https://stackoverflow.com/ (dúvidas específicas)
 - ChatGPT (dúvidas gerias)
+ 
 
 ---
 Projeto entregue para a disciplina de [Desenvolvimento de Software para a Web](http://github.com/andreainfufsm/elc1090-2024a) em 2024a
