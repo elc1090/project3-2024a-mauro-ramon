@@ -18,16 +18,16 @@ Ramon Godoy Izidoro
 ### Nosso projeto
 
 Software de gerenciamento e controle de estoque, disponibiliza funções de:
- - visualização de planilha dos produtos cadastrados na base dados
- - adição de registros (nome, marca, quantidade)
- - exclusão de registros
- - atualização de registros
+ - visualização de planilha dos produtos cadastrados na base dados;
+ - adição de registros (nome, marca, quantidade);
+ - exclusão de registros;
+ - atualização de registros.
 
 ### Desenvolvimento
 
-O frontend foi desenvolvido usando React, o deploy foi feito na cloud Firebase;  
-O backend foi deito em node com express, o deploy foi feito na cloud Render;  
-O banco de dados escolhido foi Mongo-DB (não relacional), deploy foi feito com Atlas.
+- O frontend foi desenvolvido usando React, o deploy foi feito na cloud Firebase;  
+- O backend foi deito em node com express, o deploy foi feito na cloud Render;  
+- O banco de dados escolhido foi Mongo-DB (não relacional), deploy foi feito com Atlas.
 
 ![Arquitetura do projeto](./arch.png)
 
