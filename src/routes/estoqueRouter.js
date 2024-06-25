@@ -1,14 +1,17 @@
 import { Router } from 'express';
-
-import { dropDatabase, getStock, setStock, deleteById, updateById } from '../db/mongoClient.js'
+import { getStock, setStock, deleteById, updateById } from '../lib/estoque.js';
+import { authenticateToken } from '../lib/secure/auth.js';
+import { dropDatabase } from '../db/mongoClient.js';
 
 const router = Router();
 
+router.use( authenticateToken );
+
 router.get('/', async (req, res) => {
     try {
-        const cat = req.query.cat;
+        const user = req.user;
 
-        const result = await getStock(cat);
+        const result = await getStock(user);
 
         res.status(200).json({
             "data" : result
@@ -24,8 +27,9 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const {cat, atr} = req.body;
+        const user = req.user;
     
-        const result = await setStock(cat, atr);
+        const result = await setStock(user, cat, atr);
     
         res.status(200).json({
             "result" : result
@@ -55,9 +59,10 @@ router.delete('/all', async (req, res) => {
 
 router.delete('/', async(req, res) =>{
     try{
-        const {id} = req.body;
+        const { id } = req.body;
+        const user = req.user;
 
-        const result = await deleteById(id);
+        const result = await deleteById(user, id);
 
         res.status(200).json({
             "result" : result
@@ -73,9 +78,10 @@ router.delete('/', async(req, res) =>{
 
 router.put('/', async(req, res) => {
     try{
-        const {id, cat, atr} = req.body;
+        const { id, cat, atr} = req.body;
+        const user = req.user;
 
-        const result = await updateById(id, cat, atr);
+        const result = await updateById(user, id, cat, atr);
 
         res.status(200).json({
             "result" : result

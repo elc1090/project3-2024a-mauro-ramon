@@ -7,6 +7,8 @@ import cors 		from 'cors';
 import fs           from 'fs';                  //JS built in file system
 
 import { estoqueRouter } from './routes/estoqueRouter.js';
+import { userRouter } from './routes/userRouter.js';
+import { login } from './lib/secure/auth.js';
 
 //info, error, critical logger
 export const logger = pino({
@@ -58,10 +60,15 @@ try
 
 	//hello world page
 	server.get('/', async (req, res) => {
-		res.status(200).send('<h3 style="text-align:center">Hello World!</h3>');
+		res.status(200).send(`
+			<h2 style="text-align:center">Estoque!</h2>
+			<hr/><p style="text-align:center">Read the docs: <a href="/api-doc">/api-doc</a></p>
+		`);
 	})
 
+	server.use('/login', login);
 	server.use('/estoque', estoqueRouter);
+	server.use('/user', userRouter);
 	
 	//not found page
 	server.all('*', async (req, res) => { 

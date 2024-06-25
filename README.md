@@ -26,7 +26,7 @@ Software de gerenciamento e controle de estoque, disponibiliza funções de:
 ### Desenvolvimento
 
 - O frontend foi desenvolvido usando React, o deploy foi feito na cloud Firebase;  
-- O backend foi deito em node com express, o deploy foi feito na cloud Render;  
+- O backend foi feito em node com express, o deploy foi feito na cloud Render;  
 - O banco de dados escolhido foi Mongo-DB (não relacional), deploy foi feito com Atlas.
 
 ![Arquitetura do projeto](./arch.png)
