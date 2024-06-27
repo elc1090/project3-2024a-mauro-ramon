@@ -1,19 +1,28 @@
 import { Router } from 'express';
-import { createUser, findAll } from '../lib/user.js';
+import { createUser, getUsers, findUser } from '../lib/user.js';
 
 const router = Router();
 
 router.post('/', async (req, res) => {
-    
-    try {
+    try
+    {
         const { name, key } = req.body;
         
-        const result = await createUser(name, key);
-    
-        res.status(200).json({
-            "result" : result
-        })
-    } catch (e) {
+        if ( await findUser(name) )
+        {
+            res.status(409).json({
+                error : 'Username already taken'
+            })
+        }
+        else
+        {
+            res.status(200).json({
+                data : await createUser(name, key)
+            })
+        }
+    }
+    catch (e)
+    {
         res.status(500).json({
             "error": e.message,
             "ok": false 
@@ -22,14 +31,14 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-    
-    try {        
-        const result = await findAll();
-    
+    try
+    {            
         res.status(200).json({
-            "result" : result
+            data : await getUsers()
         })
-    } catch (e) {
+    }
+    catch (e)
+    {
         res.status(500).json({
             "error": e.message,
             "ok": false 

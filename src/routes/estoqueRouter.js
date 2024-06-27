@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { getStock, setStock, deleteById, updateById } from '../lib/estoque.js';
-import { authenticateToken } from '../lib/secure/auth.js';
+import { authenticateToken } from '../secure/auth.js';
 import { dropDatabase } from '../db/mongoClient.js';
 
 const router = Router();
@@ -8,15 +8,16 @@ const router = Router();
 router.use( authenticateToken );
 
 router.get('/', async (req, res) => {
-    try {
+    try
+    {
         const user = req.user;
 
-        const result = await getStock(user);
-
         res.status(200).json({
-            "data" : result
+            data : await getStock(user)
         });
-    } catch (e) {
+    } 
+    catch (e)
+    {
         res.status(500).json({
             "error": e.message,
             "ok": false 
@@ -25,16 +26,17 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    try {
+    try
+    {
         const {cat, atr} = req.body;
         const user = req.user;
-    
-        const result = await setStock(user, cat, atr);
-    
+        
         res.status(200).json({
-            "result" : result
+            data : await setStock(user, cat, atr)
         })
-    } catch (e) {
+    }
+    catch (e)
+    {
         res.status(500).json({
             "error": e.message,
             "ok": false 
@@ -43,13 +45,14 @@ router.post('/', async (req, res) => {
 });
 
 router.delete('/all', async (req, res) => {
-    try {    
-        const result = await dropDatabase();
-    
+    try
+    {        
         res.status(200).json({
-            "result" : result
+            data : await dropDatabase()
         })
-    } catch (e) {
+    }
+    catch (e)
+    {
         res.status(500).json({
             "error": e.message,
             "ok": false 
@@ -58,17 +61,17 @@ router.delete('/all', async (req, res) => {
 });
 
 router.delete('/', async(req, res) =>{
-    try{
+    try
+    {
         const { id } = req.body;
         const user = req.user;
 
-        const result = await deleteById(user, id);
-
         res.status(200).json({
-            "result" : result
+            data : await deleteById(user, id)
         })
     }
-    catch{
+    catch (e)
+    {
         res.status(500).json({
             "error": e.message,
             "ok": false
@@ -77,17 +80,17 @@ router.delete('/', async(req, res) =>{
 });
 
 router.put('/', async(req, res) => {
-    try{
+    try
+    {
         const { id, cat, atr} = req.body;
         const user = req.user;
 
-        const result = await updateById(user, id, cat, atr);
-
         res.status(200).json({
-            "result" : result
+            data : await updateById(user, id, cat, atr)
         })
     }
-    catch{
+    catch (e)
+    {
         res.status(500).json({
             "error": e.message,
             "ok": false

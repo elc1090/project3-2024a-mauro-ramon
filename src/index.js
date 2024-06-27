@@ -8,7 +8,7 @@ import fs           from 'fs';                  //JS built in file system
 
 import { estoqueRouter } from './routes/estoqueRouter.js';
 import { userRouter } from './routes/userRouter.js';
-import { login } from './lib/secure/auth.js';
+import { login } from './secure/auth.js';
 
 //info, error, critical logger
 export const logger = pino({

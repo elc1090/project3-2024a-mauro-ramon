@@ -3,8 +3,9 @@ import { logger } from '../index.js';
 
 export async function getClient() {
     const url = process.env.DB_URL;
-    let mongoClient;
+    if (!url) throw new Error('DB credentials not found');
 
+    let mongoClient;
     try {
         mongoClient = new MongoClient(url);
         await mongoClient.connect();

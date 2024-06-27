@@ -32,6 +32,7 @@ export async function setStock(user, cat, atr) {
         return insertResult;
     } catch (e) {
         logger.error(e.message);
+        throw e;
     } finally {
         await mongoClient.close();
     }
@@ -45,10 +46,13 @@ export async function getStock(user) {
         const db = mongoClient.db('stock');
         const collection = db.collection('stock');
         
-        const query = { user };        
-        return await collection.find(query).toArray();
+        const query = { user : user };  
+        const res = await collection.find(query).toArray();
+
+        return res.length ? res[0].items : [];
     } catch (e) {
         logger.error(e.message);
+        throw e;
     } finally {
         await mongoClient.close();
     }
@@ -65,6 +69,7 @@ export async function deleteById(user, id) {
         return await collection.updateOne({ user }, { $pull: { items: { id: id } } });
     } catch (e) {
         logger.error(e.message);
+        throw e;
     } finally {
         await mongoClient.close();
     }
@@ -98,6 +103,7 @@ export async function updateById(user, id, cat, atr) {
         }
     } catch (e) {
         logger.error(e.message);
+        throw e;
     } finally {
         await mongoClient.close();
     }

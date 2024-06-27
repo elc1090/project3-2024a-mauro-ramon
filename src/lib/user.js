@@ -13,12 +13,13 @@ export async function findUser(name) {
         return await collection.findOne({ name });
     } catch (e) {
         logger.error(e.message);
+        throw e;
     } finally {
         await mongoClient.close();
     } 
 }
 
-export async function findAll(name) {
+export async function getUsers() {
     let mongoClient;
  
     try {
@@ -29,6 +30,7 @@ export async function findAll(name) {
         return await collection.find({}).toArray();
     } catch (e) {
         logger.error(e.message);
+        throw e;
     } finally {
         await mongoClient.close();
     } 
@@ -46,6 +48,7 @@ export async function createUser(name, key) {
         return await collection.insertOne({ name, key: hash });
     } catch (e) {
         logger.error(e.message);
+        throw e;
     } finally {
         await mongoClient.close();
     } 
