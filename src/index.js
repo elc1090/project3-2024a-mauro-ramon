@@ -66,7 +66,7 @@ try
 		`);
 	})
 
-	server.use('/login', login);
+	server.post('/login', login);
 	server.use('/estoque', estoqueRouter);
 	server.use('/user', userRouter);
 	

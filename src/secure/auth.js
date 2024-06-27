@@ -40,7 +40,7 @@ export async function login(req, res) {
             return res.status(401).json({ error: 'Invalid password' });
         }
         
-        res.status(200).json({
+        return res.status(200).json({
             token : generateToken(userRes)
         });
     }
@@ -48,7 +48,7 @@ export async function login(req, res) {
     {
         logger.error(e.message);
 
-        res.status(500).json({
+        return res.status(500).json({
             error : e.message,
             ok : false
         });
