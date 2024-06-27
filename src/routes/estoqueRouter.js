@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { getStock, setStock, deleteById, updateById } from '../lib/estoque.js';
 import { authenticateToken } from '../secure/auth.js';
-import { dropDatabase } from '../db/mongoClient.js';
 
 const router = Router();
 
@@ -21,7 +20,7 @@ router.get('/', async (req, res) => {
         res.status(500).json({
             "error": e.message,
             "ok": false 
-        })
+        });
     }
 });
 
@@ -33,30 +32,14 @@ router.post('/', async (req, res) => {
         
         res.status(200).json({
             data : await setStock(user, cat, atr)
-        })
+        });
     }
     catch (e)
     {
         res.status(500).json({
             "error": e.message,
             "ok": false 
-        })
-    }
-});
-
-router.delete('/all', async (req, res) => {
-    try
-    {        
-        res.status(200).json({
-            data : await dropDatabase()
-        })
-    }
-    catch (e)
-    {
-        res.status(500).json({
-            "error": e.message,
-            "ok": false 
-        })
+        });
     }
 });
 
@@ -68,14 +51,14 @@ router.delete('/', async(req, res) =>{
 
         res.status(200).json({
             data : await deleteById(user, id)
-        })
+        });
     }
     catch (e)
     {
         res.status(500).json({
             "error": e.message,
             "ok": false
-        })
+        });
     }
 });
 
@@ -87,14 +70,14 @@ router.put('/', async(req, res) => {
 
         res.status(200).json({
             data : await updateById(user, id, cat, atr)
-        })
+        });
     }
     catch (e)
     {
         res.status(500).json({
             "error": e.message,
             "ok": false
-        })
+        });
     }
 });
 

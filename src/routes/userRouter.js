@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser, getUsers, findUser } from '../lib/user.js';
+import { createUser, findUser, getAllUsers } from '../lib/user.js';
 
 const router = Router();
 
@@ -12,13 +12,13 @@ router.post('/', async (req, res) => {
         {
             res.status(409).json({
                 error : 'Username already taken'
-            })
+            });
         }
         else
         {
             res.status(200).json({
                 data : await createUser(name, key)
-            })
+            });
         }
     }
     catch (e)
@@ -26,23 +26,23 @@ router.post('/', async (req, res) => {
         res.status(500).json({
             "error": e.message,
             "ok": false 
-        })
+        });
     }
 });
 
 router.get('/', async (req, res) => {
     try
-    {            
+    {
         res.status(200).json({
-            data : await getUsers()
-        })
-    }
+            data : await getAllUsers()
+        });
+    } 
     catch (e)
     {
         res.status(500).json({
             "error": e.message,
             "ok": false 
-        })
+        });
     }
 });
 

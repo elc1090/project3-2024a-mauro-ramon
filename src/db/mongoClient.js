@@ -16,18 +16,3 @@ export async function getClient() {
         process.exit(1);
     }
 }
-
-export async function dropDatabase() {
-    let mongoClient;
- 
-    try {
-        mongoClient = await getClient();
-        const db = mongoClient.db('stock');
-
-        return await db.dropDatabase();
-    } catch (e) {
-        logger.error(e.message);
-    } finally {
-        await mongoClient.close();
-    }
-}
