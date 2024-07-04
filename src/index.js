@@ -8,7 +8,7 @@ import fs           from 'fs';                  //JS built in file system
 
 import { estoqueRouter } from './routes/estoqueRouter.js';
 import { userRouter } from './routes/userRouter.js';
-import { login } from './secure/auth.js';
+import { login, logout } from './secure/auth.js';
 
 //info, error, critical logger
 export const logger = pino({
@@ -67,6 +67,7 @@ try
 	})
 
 	server.post('/login', login);
+	server.post('/logout', logout);
 	server.use('/estoque', estoqueRouter);
 	server.use('/user', userRouter);
 	

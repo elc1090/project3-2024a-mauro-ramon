@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import { findUser } from '../lib/user.js';
 import { logger } from '../index.js';
+import { getClient } from '../db/mongoClient.js';
 
 function generateToken(user) {
     try
@@ -64,8 +65,15 @@ export function authenticateToken(req, res, next) {
         {
             return res.status(401).json({ error: 'Token not found'});
         }
+
+		const token_ = token.split(' ')[1];
+
+		if (checkRevoked(token_))
+		{
+			return res.status(401).json({ error: 'User logged out'});
+		}
             
-        jwt.verify(token.split(' ')[1], process.env.SECRET_KEY, (err, payload) => {
+        jwt.verify(token_, process.env.SECRET_KEY, (err, payload) => {
             if (err)
                 return res.status(403).json({ error: 'Token invalid'});
             else req.user = payload.user;
@@ -82,4 +90,73 @@ export function authenticateToken(req, res, next) {
             ok : false
         });
     }
+}
+
+export async function logout(req, res)
+{
+    try
+    {
+        const token = req.headers['authorization'];
+        
+        if (!token)
+        {
+            return res.status(401).json({ error: 'Token not found'});
+        }
+
+		const token_ = token.split(' ')[1];
+            
+        jwt.verify(token_, process.env.SECRET_KEY, (err, payload) => {
+            if (err)
+                return res.status(403).json({ error: 'Token invalid'});
+            else
+                return res.status(200).json({ data: revokeToken(token_)});
+        });
+    }
+    catch (e)
+    {
+        logger.error(e.message);
+        
+        return res.status(500).json({
+            error : e.message,
+            ok : false
+        });
+    }
+}
+
+async function revokeToken(token) {
+	const client = await getClient();
+
+	try {
+		const db = client.db('stock');
+		const coll = db.collection('blacklist');
+
+		const result = await coll.insertOne({
+			token: token,
+			createdAt: new Date()
+		});
+
+		return result;
+	} catch (e) {
+		logger.error(e.message);
+	} finally {
+		await client.close();
+	}
+}
+
+async function checkRevoked(token)
+{
+	const client = await getClient();
+
+	try {
+		const db = client.db('stock');
+		const coll = db.collection('blacklist');
+
+		const revokedToken = await coll.findOne({ token: token });
+
+		return !!revokedToken;
+	} catch (e) {
+		logger.error(e.message);
+	} finally {
+		await client.close();
+	}
 }
