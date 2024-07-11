@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { createUser, findUser, getAllUsers } from '../lib/user.js';
+import { generateToken } from '../secure/auth.js';
 
 const router = Router();
 
@@ -17,7 +18,8 @@ router.post('/', async (req, res) => {
         else
         {
             res.status(200).json({
-                data : await createUser(name, key)
+                data : await createUser(name, key),
+                token : generateToken({name : name})
             });
         }
     }

@@ -5,7 +5,7 @@ import { findUser } from '../lib/user.js';
 import { logger } from '../index.js';
 import { getClient } from '../db/mongoClient.js';
 
-function generateToken(user) {
+export function generateToken(user) {
     try
     {
         const payload = { 
@@ -56,7 +56,7 @@ export async function login(req, res) {
     }
 };
 
-export function authenticateToken(req, res, next) {
+export async function authenticateToken(req, res, next) {
     try
     {
         const token = req.headers['authorization'];
@@ -68,7 +68,7 @@ export function authenticateToken(req, res, next) {
 
 		const token_ = token.split(' ')[1];
 
-		if (checkRevoked(token_))
+		if (await checkRevoked(token_))
 		{
 			return res.status(401).json({ error: 'User logged out'});
 		}
@@ -105,11 +105,11 @@ export async function logout(req, res)
 
 		const token_ = token.split(' ')[1];
             
-        jwt.verify(token_, process.env.SECRET_KEY, (err, payload) => {
+        jwt.verify(token_, process.env.SECRET_KEY, async (err, payload) => {
             if (err)
                 return res.status(403).json({ error: 'Token invalid'});
             else
-                return res.status(200).json({ data: revokeToken(token_)});
+                return res.status(200).json({ data: await revokeToken(token_)});
         });
     }
     catch (e)
